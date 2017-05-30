@@ -4,14 +4,14 @@
 
 ## Usage
 
-Step 0: make sure all of your callback functions will be callbacked as (err, result) format
+**Step 0**: make sure all of your callback functions will be callbacked as (err, result) format
 * 1st param: error indicated (usually null)
 * 2nd param: real return value
 
-Step 1: define wraper function as a generator function
+**Step 1**: define wraper function as a generator function
 * function* writeSyncInside(args1, args2) { }
 
-Step 2: call functions in sync 
+**Step 2**: call functions in sync 
 * let <returnValue> = yield [ <callback_function>, arg1, arg2 ... ]
 
 
