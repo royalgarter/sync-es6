@@ -8,12 +8,18 @@
 * 1st param: error indicated (usually null)
 * 2nd param: real return value
 
-**Step 1**: define wraper function as a generator function
-* function* writeSyncInside(args1, args2) { }
+**Step 1**: define wraper function as a generator function, and call inside functions in sync 
+```javascript
+function* writeSyncInside(args1, args2) { 
+	let returnValue = yield [callback_function, arg1, arg2, ... ]
+}
+```
 
-**Step 2**: call functions in sync 
-* let <returnValue> = yield [ <callback_function>, arg1, arg2 ... ]
-
+**Step 2**: CALL IT with sync
+```javascript
+const _sync = require('sync-es6');
+_sync(writeSyncInside);
+```
 
 ### Sample code:
 
