@@ -14,7 +14,7 @@ const _sync = function (fnGenerator /*, args1, args2,... callback*/) {
 
 	const iterator =  fnGenerator.apply(null, args);
 	iterator.myCallback = (err, data) => {
-		if (err) return iterator.throw(err);
+		if (err) return finalCallback ? finalCallback(err) : iterator.throw(err);
 		
 		const nextPart = iterator.next(data);
 		

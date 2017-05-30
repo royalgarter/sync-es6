@@ -3,7 +3,11 @@ const _sync = require('./sync.js');
 const demoCallback = (v1, v2, callback) => {
 	setTimeout( () => {
 		console.log('\ndemoCallback v1', v1, 'v2', v2);
-		return callback(null, 'demoCallback done' + v1 + v2);
+		
+		// uncomment if you want to test error case
+		// if (v1 == 5 || v1 == 'c') return callback('ECRASH');
+		
+		return callback(null, 'Done:' + v1 + v2);
 	}, 1e3)
 }
 
@@ -17,7 +21,7 @@ function* demoGeneratorSub(ref) {
 	return dataB;
 }
 
-function* demoGenerator(args1, args2) {
+_sync(function* demoGenerator(args1, args2) {
 
 	console.log('args', args1, args2);
 
@@ -37,8 +41,6 @@ function* demoGenerator(args1, args2) {
 	console.log('data5', data5);
 
 	return data5;
-}
-
-_sync(demoGenerator, 'a', 'b', (err, val) => {
-	console.log('finalcallback', val);
+}, 'a', 'b', (err, val) => {
+	console.log('finalcallback', err, val);
 });
