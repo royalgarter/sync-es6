@@ -1,3 +1,7 @@
+## About
+
+This library is written purely in ES6 without any dependency & helping you to write-in-sync natively (not like other libraries)
+
 ## Install
 
 * npm i sync-es6 --save
@@ -43,6 +47,7 @@ function* demoGeneratorSub(ref) {
 	return dataB;
 }
 
+// Inside this function you can execute callback function in sync (Bye bye CALLBACK HELL!!!)
 function* demoGenerator(args1, args2) {
 
 	console.log('args', args1, args2);
@@ -53,6 +58,7 @@ function* demoGenerator(args1, args2) {
 	const data2 = yield [demoCallback, 3, 4];
 	console.log('data2', data2);
 
+	// You can even call another sub sync function as ease
 	const data3 = yield [_sync, demoGeneratorSub]
 	console.log('data3', data3);
 
@@ -69,3 +75,9 @@ _sync(demoGenerator, 'a', 'b', (err, val) => {
 	console.log('finalcallback', val);
 });
 ```
+
+
+### Credit:
+
+I write this library in thanks of Mr.Luciotato that looking into his code help me learn about generator function. I guess that because of he want the wait.for-es6 should be backward compatible with wait.for (ES5) so there something messy if you wall to call multiple sync functions inside each others (with the "onComplete" event). So I decide to seperate with a little modification to make it easier to use.
+* [wait.for-es6](https://www.npmjs.com/package/wait.for-es6) 
