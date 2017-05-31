@@ -1,6 +1,8 @@
 // const _sync = require('sync-es6'); /*How to call in your code*/
 const _sync = require('./sync.js');
 
+'use strict';
+
 const demoAsync = (v1, v2, callback) => {
 	setTimeout( () => {
 		console.log('\ndemoAsync v1', v1, 'v2', v2);

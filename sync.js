@@ -1,3 +1,5 @@
+'use strict';
+
 const _sync = function (fnGenerator /*, args1, args2,... callback*/) { 
 
 	const args = Array.prototype.slice.call(arguments, 1);
