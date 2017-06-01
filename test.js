@@ -8,7 +8,7 @@ const demoAsync = (v1, v2, callback) => {
 		console.log('\ndemoAsync v1', v1, 'v2', v2);
 		
 		// Uncomment if you want to test error case
-		if (v1 == 5 || v1 == 'c') return callback('ECRASH');
+		// if (v1 == 5 || v1 == 'c') return callback('ECRASH');
 		
 		return callback(null, 'Done: ' + v1 + v2);
 	}, 1e3)
@@ -26,7 +26,7 @@ function* demoGeneratorSub(ref) {
 }
 
 // Inside this function you can execute callback function in sync (Bye bye CALLBACK HELL!!!)
-_sync(function* (args1, args2) {
+let iter = _sync(function* (args1, args2) {
 
 	console.log('args', args1, args2);
 
@@ -37,16 +37,20 @@ _sync(function* (args1, args2) {
 	console.log('data2', data2);
 
 	// You can even call another sub sync function as ease
-	const data3 = yield [_sync, demoGeneratorSub]
+	const data3 = yield* demoGeneratorSub(); 
+	// OR: const data3 = yield [_sync, demoGeneratorSub];
 	console.log('data3', data3);
 
 	const data4 = yield [demoAsync, 5, 6];
 	console.log('data4', data4);
 
+	// Uncomment if you want to break soon
+	// iter.break(data4 /* OR null*/);
+
 	const data5 = yield [demoAsync, 7, 8];
 	console.log('data5', data5);
 
-	return data5;
+	return data4 + data5;
 }, 'hello', 'world', (err, val) => {
-	console.log('finalcallback err:', err, 'val:', val);
+	console.log('finalcallback:', {err: err, val: val});
 });

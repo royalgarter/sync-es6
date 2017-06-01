@@ -1,33 +1,39 @@
 'use strict';
 
-const _sync = function (fnGenerator /*, args1, args2,... callback*/) { 
-
-	const args = Array.prototype.slice.call(arguments, 1);
-	
-	let finalCallback = null;
-	if (args.length && typeof args[args.length-1] === 'function')
-		finalCallback = args[args.length-1];
+module.exports = (generator, ... args) => { 
+	const callback = (args.length && typeof args[args.length-1] === 'function') 
+						? args[args.length-1] : null;
 
 	const callAsync = (funcAndArgs, callback) => {
-		const argsOnly = Array.prototype.slice.call(funcAndArgs, 1);
+		let argsOnly = Array.prototype.slice.call(funcAndArgs, 1);
 		argsOnly.push(callback);
-		funcAndArgs[0].apply(null, argsOnly);
+		funcAndArgs[0].apply(funcAndArgs[0], argsOnly);
 	}
 
-	const iterator =  fnGenerator.apply(null, args);
-	iterator.myCallback = (err, data) => {
-		if (err) return finalCallback ? (iterator.return() & finalCallback(err)) : iterator.throw(err);
+	const iterator =  generator.apply(generator, args);
+	
+	iterator.isBreak = false;
+	iterator.dataBreak = null;
+	iterator.break = (data) => {
+		iterator.isBreak = true;
+		iterator.dataBreak = data;
+	}
+	
+	iterator.loop = (err, data) => {
+		if (err) return (callback ? (iterator.return() & callback(err)) : iterator.throw(err));
 		
 		const nextPart = iterator.next(data);
-		
-		if (!nextPart.done) 
-			return callAsync(nextPart.value, iterator.myCallback);
 
-		return finalCallback && finalCallback(null, nextPart.value);
+		if (iterator.isBreak) {
+			callback && callback(iterator.dataBreak ? null : 'EBREAK', iterator.dataBreak);
+			return iterator.return()
+		}
+		
+		if (nextPart.done) return callback && callback(null, nextPart.value);
+			
+		return callAsync(nextPart.value, iterator.loop);
 	};
-	iterator.myCallback();
+	iterator.loop();
 	
 	return iterator;
 }
-
-module.exports = _sync;
