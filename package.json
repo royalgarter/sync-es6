@@ -5,7 +5,7 @@
   },
   "name": "sync-es6",
   "description": "How to write in sync (with only generator ES6), based on waitfor-ES6",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "homepage": "https://github.com/royalgarter/sync-es6",
   "repository": {
     "type": "git",
@@ -24,6 +24,6 @@
   "bugs": {
     "url": "https://github.com/royalgarter/sync-es6/issues"
   },
-  "_id": "sync-es6@1.0.7",
+  "_id": "sync-es6@1.0.8",
   "_from": "sync-es6@*"
 }

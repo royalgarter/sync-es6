@@ -45,7 +45,7 @@ let iter = _sync(function* (args1, args2) {
 	console.log('data4', data4);
 
 	// Uncomment if you want to break soon
-	// iter.break(data4 /* OR null*/);
+	// iter.break(null, data4);
 
 	const data5 = yield [demoAsync, 7, 8];
 	console.log('data5', data5);

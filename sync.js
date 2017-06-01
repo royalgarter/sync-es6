@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (generator, ... args) => { 
-	const callback = (args.length && typeof args[args.length-1] === 'function') 
+	const cb = (args.length && typeof args[args.length-1] === 'function') 
 						? args[args.length-1] : null;
 
 	const callAsync = (funcAndArgs, callback) => {
@@ -10,30 +10,24 @@ module.exports = (generator, ... args) => {
 		funcAndArgs[0].apply(funcAndArgs[0], argsOnly);
 	}
 
-	const iterator =  generator.apply(generator, args);
+	const iter = generator.apply(generator, args);
 	
-	iterator.isBreak = false;
-	iterator.dataBreak = null;
-	iterator.break = (data) => {
-		iterator.isBreak = true;
-		iterator.dataBreak = data;
-	}
+	iter.breaker = {flag: false, err: null, data: null};
+	iter.break = (err, data) => iter.breaker = {flag: true, err: err, data: data};
 	
-	iterator.loop = (err, data) => {
-		if (err) return (callback ? (iterator.return() & callback(err)) : iterator.throw(err));
+	iter.loop = (err, data) => {
+		if (err) return (cb ? (iter.return() & cb(err)) : iter.throw(err));
 		
-		const nextPart = iterator.next(data);
+		const nextPart = iter.next(data);
 
-		if (iterator.isBreak) {
-			callback && callback(iterator.dataBreak ? null : 'EBREAK', iterator.dataBreak);
-			return iterator.return()
-		}
+		if (iter.breaker.flag)
+			return iter.return() & (cb && cb(iter.breaker.err, iter.breaker.data));
 		
-		if (nextPart.done) return callback && callback(null, nextPart.value);
+		if (nextPart.done) return cb && cb(null, nextPart.value);
 			
-		return callAsync(nextPart.value, iterator.loop);
+		return callAsync(nextPart.value, iter.loop);
 	};
-	iterator.loop();
+	iter.loop();
 	
-	return iterator;
+	return iter;
 }
