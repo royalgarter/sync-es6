@@ -53,6 +53,22 @@ _sync(writeSyncInside /*,args1, args2, ... , callback*/);
 ### Sample code:
 * [See here, it's very short I swear!!!](https://github.com/royalgarter/sync-es6/blob/master/test.js)
 
+### Syntax:
+
+```javascript
+let iterator = _sync(runner,args1, args2, ... , finalcallback);
+```
+
+* Parameters
+	* **runner** *(required)*: a generator function OR object ```{generator: function*, isTolerant: boolean}```
+	    * **isTolerant** *(optional, default "false")*: if it's "true", when an error occurred in inside async function (when callback ```return (err)```) the runner will not throw & break to finalcallback (if existed) and just ```return undefined```
+	* **args** *(optional)*: input params for generator function
+	* **finalcallback** *(optional)*: catch error & final result for runner, if it's undefined the runner will throw() when error occurred
+
+* Return
+	* **iterator** *(optional)*: IT'S NOT final result value, just a [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols). Normally you wouldn't use it.
+
+
 ### Credit:
 
 I write this library in thanks of Mr.Luciotato that looking into his code help me learn about generator function. I guess that because of he want the wait.for-es6 should be backward compatible with wait.for (ES5) so there something messy if you wall to call multiple async functions inside each others (with the "onComplete" event) OR maybe just I don't know how to use it properly. So I decide to seperate with a little modification to make it easier to use.

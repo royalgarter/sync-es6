@@ -25,8 +25,7 @@ function* demoGeneratorSub(ref) {
 	return {a: dataA, b: dataB};
 }
 
-// Inside this function you can execute callback function in sync (Bye bye CALLBACK HELL!!!)
-let iter = _sync(function* (args1, args2) {
+function* demoGenerator(args1, args2) {
 
 	console.log('args', args1, args2);
 
@@ -45,12 +44,18 @@ let iter = _sync(function* (args1, args2) {
 	console.log('data4', data4);
 
 	// Uncomment if you want to break soon
-	// iter.break(null, data4);
+	// return data4;
 
 	const data5 = yield [demoAsync, 7, 8];
 	console.log('data5', data5);
 
 	return data4 + data5;
-}, 'hello', 'world', (err, val) => {
-	console.log('finalcallback:', {err: err, val: val});
+}
+
+// Simplest call 
+// _sync(demoGenerator);
+
+// Full call 
+let iter = _sync({generator: demoGenerator, isTolerant: true}, 'hello', 'world', (err, val) => {
+	console.log('fullcallback:', {err: err, val: val});
 });
