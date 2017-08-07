@@ -6,10 +6,18 @@ module.exports = (fn, ... args) => {
 	
 	const finish = (err, result, iter) => (iter && iter.return()) & (cb && cb(err, result));
 
-	const callAsync = (funcAndArgs, callback) => {
-		const argsOnly = Array.prototype.slice.call(funcAndArgs, 1);
+	const callAsync = (fnNArgs, callback) => {
+		const argsOnly = Array.prototype.slice.call(fnNArgs, 1);
 		argsOnly.push(callback);
-		funcAndArgs[0].apply(funcAndArgs[0], argsOnly);
+		
+		let obj = fnNArgs[0].apply(fnNArgs[0], argsOnly);
+
+		if (!!obj && (typeof obj === 'object' || typeof obj === 'function') 
+			&& typeof obj.then === 'function' && typeof obj.catch === 'function') {
+			// console.log('obj is Promise')
+			obj.then(pPesult => callback(null, pPesult)).catch(pError => callback(pError));
+		}
+			
 	}
 
 	const obj = {

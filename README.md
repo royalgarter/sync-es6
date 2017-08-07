@@ -1,6 +1,6 @@
 ## About
 
-The most native and simplest way to write-in-sync
+The most native and simplest way to write-in-sync in NodeJS
 
 This library is written purely in ES6 without any dependency
 
@@ -8,7 +8,7 @@ Still non-blocking node's event loop
 
 Fully compatible with all other libraries (such as [async](https://www.npmjs.com/package/async))
 
-NO Promise, async/await involved
+No Promise, async/await involved, just Callback
 
 ## Install
 
@@ -66,7 +66,7 @@ let iterator = _sync(runner,args1, args2, ... , finalcallback);
 	* **finalcallback** *(optional)*: catch error & final result for runner, if it's undefined the runner will throw() when error occurred
 
 * Return
-	* **iterator** *(optional)*: IT'S NOT final result value, just a [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols). Normally you wouldn't use it.
+	* **iterator** *(optional)*: IT'S NOT final result value, just a [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols). Normally you wouldn't use it. It has .break(err) method when you want to break from runner function anytime.
 
 
 ### Credit:

@@ -10,8 +10,20 @@ const demoAsync = (v1, v2, callback) => {
 		// Uncomment if you want to test error case
 		// if (v1 == 5 || v1 == 'c') return callback('ECRASH');
 		
-		return callback(null, 'Done: ' + v1 + v2);
+		return callback(null, 'Async success: ' + v1 + v2);
 	}, 1e3)
+}
+
+const demoPromise = (v1, v2) => {
+	return new Promise( (resolve, reject) => {
+		console.log('\demoPromise v1', v1, 'v2', v2);
+
+		setTimeout( () => {
+			return resolve('Promise success:' + v1 + v2);
+
+			// return reject(new Error('Promise failed'));
+		}, 1e3)
+	});
 }
 
 // A sub wrapper function in case you want to call it from multi main wrapper functions
@@ -32,7 +44,7 @@ function* demoGenerator(args1, args2) {
 	const data1 = yield [demoAsync, 1, 2];
 	console.log('data1', data1);
 
-	const data2 = yield [demoAsync, 3, 4];
+	const data2 = yield [demoPromise, 3, 4];
 	console.log('data2', data2);
 
 	// You can even call another sub sync function as ease
