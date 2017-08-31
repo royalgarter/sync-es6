@@ -20,15 +20,25 @@ module.exports = (fn, ... args) => {
 	}
 
 	const callAsync = (fnNArgs, callback) => {
-		const argsOnly = Array.prototype.slice.call(fnNArgs, 1);
-		argsOnly.push(callback);
+		let isPromiseCall = !fnNArgs[0];
+		
+		if (isPromiseCall) fnNArgs.splice(0, 1);
 
-		let tmp = fnNArgs[0].apply(fnNArgs[0], argsOnly);
+		let argsOnly = Array.prototype.slice.call(fnNArgs, 1);
 
-		if (isPromise(tmp)) {
-			// console.log('tmp is Promise')
-			tmp.then( pPesult => callback(null, pPesult) )
-				.catch( pError => callback(pError) );
+		// console.log('--fnNArgs[0]', fnNArgs[0])
+		// console.log('--argsOnly', argsOnly)
+
+		if (!isPromiseCall) argsOnly.push(callback);
+
+		let tmp = fnNArgs[0].apply(fnNArgs[0], argsOnly);	
+
+		// console.log('--tmp', typeof tmp, isPromise(tmp));
+
+		if (isPromiseCall || isPromise(tmp)) {
+			Promise.resolve(tmp)
+				.then( pPesult => /*console.log('--pResult', pPesult) & */callback(null, pPesult) )
+				.catch( pError => /*console.log('--pResult', pError) & */callback(pError) );
 		}
 	}
 

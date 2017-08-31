@@ -44,7 +44,8 @@ function* demoGenerator(args1, args2) {
 	const data1 = yield [demoAsync, 1, 2];
 	console.log('data1', data1);
 
-	const data2 = yield [demoPromise, 3, 4];
+	// First param is null/false/0/empty string shifted if you want to call Promise
+	const data2 = yield [null, demoPromise, 3, 4]; 
 	console.log('data2', data2);
 
 	// You can even call another sub sync function as ease

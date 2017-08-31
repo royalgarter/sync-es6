@@ -8,7 +8,7 @@ Still non-blocking node's event loop
 
 Fully compatible with all other libraries (such as [async](https://www.npmjs.com/package/async))
 
-No Promise, async/await involved, just Callback
+NEW UPDATE: support Promise call (BETA - document pending) [Example](https://github.com/royalgarter/sync-es6/blob/master/test-promise.js)
 
 ## Install
 
@@ -68,6 +68,11 @@ let iterator = _sync(runner,args1, args2, ... , finalcallback);
 * Return
 	* **iterator** *(optional)*: IT'S NOT final result value, just a [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols). Normally you wouldn't use it. It has .break(err) method when you want to break from runner function anytime.
 
+```javascript
+iterator.break(err) // break exit from inside runner (generator) function.
+```
+* Parameters
+	* **err** *(required)*: Error/String/... anything that's not null
 
 ### Credit:
 
